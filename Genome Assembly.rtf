@@ -1,0 +1,55 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red22\green25\blue28;\red255\green255\blue255;\red22\green25\blue28;
+\red255\green255\blue255;\red57\green63\blue69;}
+{\*\expandedcolortbl;;\cssrgb\c11396\c12968\c14522;\cssrgb\c100000\c100000\c100000\c0;\cssrgb\c11373\c12941\c14510;
+\cssrgb\c100000\c100000\c100000;\cssrgb\c28679\c31428\c34138;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww17440\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 #QC of the reads with FastQC\'a0and clean with fastp\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 cp -R /data/users/lfalquet/SBC07107_24/ASM/groupX /data/users/$\{USER\}/groupX\
+cd /data/users/$\{USER\}/groupX\
+
+\fs26 \cf4 \cb5 \strokec4 \
+
+\fs24 \cf2 \cb3 \strokec2 #fastqc -t 4 $\{XX\}.fastq.gz\
+#fastp -i $\{XX\}.fastq -W 10 -5 -3 -M 10 -l 3000 -G -A -w 4 -o $\{XX\}_clean.fastq.gz
+\fs26 \cf4 \cb5 \strokec4 \
+\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs24 \cf2 \cb3 \strokec2 #denovo\'a0genome assembly with hifiasm\'a0\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 #module load hifiasm/0.16.1-GCCcore-10.3.0\
+#hifiasm -o $\{outdir\}/$\{barcode\} -t 8 $\{datadir\}/$\{barcode\}_clean.fastq.gz\
+#perl -ane 'if ($F[0]eq"S") \{ print ">".$F[1]."\\n".$F[2]."\\n"\}' $\{outdir\}/$\{barcode\}.bp.p_ctg.gfa > $\{outdir\}/$\{barcode\}.p_ctg.fa\
+\pard\pardeftab720\partightenfactor0
+\cf6 \strokec6 #copy script, clean reads and run assembly with hifiasm:\'a0\cf2 \strokec2 \
+cd /data/users/$USER/groupX\
+cp /data/users/lfalquet/SBC07107_24/scripts/asmdoitall.slurm .
+\fs26 \cf4 \cb5 \strokec4 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs29\fsmilli14847 \cf4 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs24 \cf2 \cb3 \strokec2 #check and compare assemblies with QUAST\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 mkdir /data/users/$USER/CompareASMbcNNNN\'a0  \
+#copy the 3 assemblies of your strain into that directory\
+cd /data/users/$USER/CompareASMbcNNNN\
+cp /data/users/lfalquet/SBC07107_24/ASM/SMRT_asm/output_bcNNNN/final_assembly.fasta .\
+cp /data/users/lfalquet/SBC07107_24/ASM/Flye_asm/output_bcNNNN/assembly.fasta .\
+cp /data/users/$\{USER\}/groupX/hifi_asm/bcNNNN/bcNNNN.p_ctg.fa .\
+cp /data/users/lfalquet/SBC07107_24/scripts/runQUAST.slurm .
+\fs26 \cf4 \cb5 \strokec4 \
+\pard\pardeftab720\sa240\partightenfactor0
+
+\fs29\fsmilli14847 \cf4 \
+
+\fs26 \cf2 \cb3 \strokec2 #check strain origin with Kraken/Bracken for each strain\
+cd /data/users/$USER/groupX}
